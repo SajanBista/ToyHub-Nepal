@@ -1,37 +1,114 @@
-{% load static %}
+% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ToyHub Nepal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ToyHub Nepal{% endblock %}</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-light">
-
-<nav class="navbar navbar-expand-lg navbar-light bg-warning shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="{% url 'home' %}">ToyHub Nepal</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'product_list' %}">Shop</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}">Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-            </ul>
+<body>
+    {# Navigation Bar #}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="ToyHub Nepal" height="40">
+                <span class="fs-4 fw-bold text-primary">ToyHub Nepal</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?category=toys">Toys</a></li>
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?category=books">Books</a></li>
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?category=games">Games</a></li>
+                            <li><a class="dropdown-item" href="{% url 'product_list' %}?category=puzzles">Puzzles</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <form class="d-flex me-2" action="{% url 'product_list' %}" method="get">
+                        <input class="form-control me-2 rounded-pill" type="search" placeholder="Search toys..." name="q">
+                        <button class="btn btn-outline-primary rounded-pill" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <a href="{% url 'cart' %}" class="btn btn-primary rounded-pill">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge bg-danger">{{ cart_count|default:"0" }}</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<main class="container py-4">
-    {% block content %}{% endblock %}
-</main>
+    {# Main Content #}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-<footer class="bg-light text-center py-3 border-top">
-    <small>&copy; 2025 ToyHub Nepal. All rights reserved.</small>
-</footer>
+    {# Footer #}
+    <footer class="bg-primary text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>ToyHub Nepal</h5>
+                    <p>Bringing joy to children across Nepal with high-quality toys and educational products.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                        <li><a href="{% url 'product_list' %}" class="text-white">Products</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white">About Us</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <address>
+                        <i class="fas fa-map-marker-alt"></i> Kathmandu, Nepal<br>
+                        <i class="fas fa-phone"></i> +977 1234567890<br>
+                        <i class="fas fa-envelope"></i> info@toyhubnp.com
+                    </address>
+                    <div class="social-icons">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-3 border-top border-light">
+                <p>&copy; {% now "Y" %} ToyHub Nepal. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>
