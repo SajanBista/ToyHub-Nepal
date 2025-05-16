@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Carousel -->
+<div id="promoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/banner1.jpg' %}" class="d-block w-100 rounded" alt="Toys Promo">
+    </div>
+  </div>
+</div>
+
+<!-- Shop by Age -->
+<h4 class="mb-3">Shop by Age</h4>
+<div class="d-flex gap-3 flex-wrap">
+  {% for age in age_groups %}
+    <a href="?age={{ age }}" class="btn btn-info rounded-pill">{{ age }}</a>
+  {% endfor %}
+</div>
+
+<!-- Featured Products -->
+<h4 class="mt-4">Featured Products</h4>
+<div class="row">
+  {% for product in featured_products %}
+    <div class="col-6 col-md-3 mb-4">
+      {# Product Card Template #}
+      <div class="card h-100 shadow-sm">
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        <div class="card-body text-center">
+          <h6>{{ product.name }}</h6>
+          <p>Rs. {{ product.price }}</p>
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-primary rounded-pill">View</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
