@@ -1,0 +1,30 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folder
+env/
+venv/
+ENV/
+
+# Django stuff:
+*.sqlite3
+db.sqlite3
+
+# Media uploads (user uploaded files)
+media/
+
+# Environment variables file (secret keys, credentials)
+.env
+
+# Logs
+*.log
+
+# IDE/editor folders (optional, depending on your editor)
+.vscode/
+.idea/
+
+# macOS system files
+.DS_Store
