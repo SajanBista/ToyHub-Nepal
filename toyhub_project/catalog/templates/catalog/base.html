@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ToyHub Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="max-w-6xl mx-auto px-4">
+
+    <header class="bg-blue-500 text-white py-4 text-center text-2xl font-bold">
+        ToyHub Nepal
+    </header>
+
+    <nav class="flex justify-end bg-gray-100 py-2 px-4">
+        {% if user.is_authenticated %}
+            <span class="mr-4">Welcome, {{ user.username }}</span>
+            <a href="{% url 'logout' %}" class="text-blue-500 hover:underline">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="text-blue-500 hover:underline mr-4">Login</a>
+            <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Register</a>
+        {% endif %}
+    </nav>
+
+    <main class="mt-4">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

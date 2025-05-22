@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ product.name }} - ToyHub Nepal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <a href="{% url 'home' %}" class="text-blue-600 underline mb-4 inline-block">← Back to products</a>
+    
+    <div class="bg-white p-6 rounded shadow flex flex-col md:flex-row gap-6">
+      <img src="{{ product.image.url }}" class="w-full md:w-1/2 h-auto object-cover rounded" alt="{{ product.name }}" />
+      
+      <div class="md:w-1/2">
+        <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
+        <p class="text-green-600 font-bold text-2xl mb-6">Rs. {{ product.price }}</p>
+        
+        <p class="mb-6 text-gray-700">This is a placeholder for the product description. You can customize it based on the product’s features.</p>
+        
+        <form action="{% url 'add_to_cart' product.pk %}" method="post" class="space-y-4">
+          {% csrf_token %}
+          <div>
+            <label for="quantity" class="block font-medium mb-1">Quantity:</label>
+            <input 
+              type="number" 
+              name="quantity" 
+              id="quantity" 
+              value="1" 
+              min="1"
+              class="w-20 px-2 py-1 border border-gray-300 rounded"
+              required
+            >
+          </div>
+          <button 
+            type="submit" 
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded"
+          >
+            Add to Cart
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

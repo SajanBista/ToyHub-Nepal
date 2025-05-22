@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart - ToyHub Nepal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+        {% if messages %}
+      <ul class="mb-4">
+        {% for message in messages %}
+          <li class="p-2 text-white rounded {{ message.tags }} {% if message.tags == 'success' %}bg-green-500{% elif message.tags == 'error' %}bg-red-500{% endif %}">
+            {{ message }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <a href="{% url 'home' %}" class="text-blue-600 underline mb-4 inline-block">← Continue Shopping</a>
+    <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
+
+    {% if cart_items %}
+      <form method="post">
+        {% csrf_token %}
+
+        <table class="w-full table-auto border-collapse border border-gray-300">
+          <thead>
+            <tr class="bg-gray-200 text-left">
+              <th class="border border-gray-300 px-4 py-2">Product</th>
+              <th class="border border-gray-300 px-4 py-2 text-center">Quantity</th>
+              <th class="border border-gray-300 px-4 py-2 text-right">Subtotal</th>
+              <th class="border border-gray-300 px-4 py-2 text-center">Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items %}
+              <tr>
+                <td class="border border-gray-300 px-4 py-2">{{ item.product.name }}</td>
+                
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                  <input 
+                    type="number" 
+                    name="quantities_{{ item.id }}" 
+                    value="{{ item.quantity }}" 
+                    min="1" 
+                    class="w-16 px-2 py-1 border rounded"
+                  >
+                </td>
+                
+                <td class="border border-gray-300 px-4 py-2 text-right">Rs. {{ item.subtotal }}</td>
+                
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                  {% if item.id %}
+                    <a href="{% url 'remove_from_cart' item.id %}" class="text-red-500 hover:underline">Remove</a>
+                  {% else %}
+                    <span class="text-gray-400">Invalid Item</span>
+                  {% endif %}
+
+                </td>
+              </tr>
+            {% endfor %}
+            
+            <tr class="font-bold">
+              <td colspan="2" class="border border-gray-300 px-4 py-2 text-right">Total:</td>
+              <td colspan="2" class="border border-gray-300 px-4 py-2 text-right">Rs. {{ total }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2 class="mt-8 mb-4 text-xl font-semibold">Delivery Address</h2>
+        {{ form.as_p }}
+
+        <div class="mt-6 flex gap-4">
+          <button 
+            type="submit" 
+            name="action" 
+            value="update" 
+            class="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+          >
+            Update Quantities
+          </button>
+
+          <button 
+            type="submit" 
+            name="action" 
+            value="buy" 
+            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          >
+            Buy
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <p class="text-gray-700">Total Price: Rs. {{ total }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>
