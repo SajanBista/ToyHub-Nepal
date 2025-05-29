@@ -12,7 +12,7 @@ class CustomUserCreationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         # Remove help texts
         for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
+            self.fields[fieldname].help_text = ''
 
 
 class DeliveryForm(forms.Form):

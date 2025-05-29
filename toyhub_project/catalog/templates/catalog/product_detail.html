@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -39,6 +39,86 @@
             Add to Cart
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ product.name }} - ToyHub Nepal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <a href="{% url 'home' %}" class="text-blue-600 underline mb-4 inline-block">← Back to products</a>
+    
+    <div class="bg-white p-6 rounded shadow flex flex-col md:flex-row gap-6">
+      
+      <!-- Product Image -->
+      <img src="{{ product.image.url }}" class="w-full md:w-1/2 h-auto object-cover rounded" alt="{{ product.name }}" />
+      
+      <!-- Product Info -->
+      <div class="md:w-1/2">
+        <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
+        
+        {% if product.stock > 0 %}
+          <p class="text-sm text-green-600 font-semibold mb-2">In stock</p>
+        {% else %}
+          <p class="text-sm text-red-600 font-semibold mb-2">Out of stock</p>
+        {% endif %}
+        
+        <p class="text-green-600 font-bold text-2xl mb-4">Rs. {{ product.price }}</p>
+        
+        <p class="mb-6 text-gray-700">{{ product.description }}</p>
+
+        <form action="{% url 'add_to_cart' product.pk %}" method="post" class="space-y-4">
+  {% csrf_token %}
+  <div>
+    <label for="quantity" class="block font-medium mb-1">Quantity:</label>
+    <input 
+      type="number" 
+      name="quantity" 
+      id="quantity" 
+      value="1" 
+      min="1"
+      class="w-20 px-2 py-1 border border-gray-300 rounded"
+      required
+    >
+    <p class="text-gray-700 mt-1">
+      Total Price: Rs. <span id="totalPrice">{{ product.price }}</span>
+    </p>
+  </div>
+
+  <button 
+    type="submit" 
+    class="w-full sm:w-auto font-semibold px-4 py-2 rounded 
+           {% if product.stock == 0 %}bg-gray-400 cursor-not-allowed opacity-50{% else %}bg-blue-600 hover:bg-blue-700 text-white{% endif %}"
+    {% if product.stock == 0 %}disabled{% endif %}
+  >
+    Add to Cart
+  </button>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const quantityInput = document.getElementById('quantity');
+    const totalPrice = document.getElementById('totalPrice');
+    const productPrice = parseFloat("{{ product.price }}");
+
+    quantityInput.addEventListener('input', () => {
+      let qty = parseInt(quantityInput.value);
+      if (isNaN(qty) || qty < 1) qty = 1;
+      totalPrice.textContent = (qty * productPrice).toFixed(2);
+    });
+  });
+</script>
+
+
       </div>
     </div>
   </div>

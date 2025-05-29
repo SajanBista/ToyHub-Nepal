@@ -1,13 +1,47 @@
 {% extends 'catalog/base.html' %}
+{% load widget_tweaks %}
+
+
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-6 rounded shadow mt-10">
-    <h2 class="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 mt-4 rounded w-full hover:bg-blue-700">
-            Create Account
-        </button>
-    </form>
+<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md mt-10">
+  <h2 class="text-3xl font-bold mb-6 text-center text-blue-700">Sign Up</h2>
+  <form method="POST" novalidate>
+    {% csrf_token %}
+
+    <!-- Username field -->
+    <div class="mb-4">
+      <label for="{{ form.username.id_for_label }}" class="block mb-1 font-semibold text-gray-700">Username</label>
+      {{ form.username|add_class:"w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+      <!-- Shorter or no help text -->
+      <p class="text-sm text-gray-500 mt-1">Use letters, digits, and @/./+/-/_ only.</p>
+      {% for error in form.username.errors %}
+        <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- Password1 field -->
+    <div class="mb-4">
+      <label for="{{ form.password1.id_for_label }}" class="block mb-1 font-semibold text-gray-700">Password</label>
+      {{ form.password1|add_class:"w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+      <!-- Remove default help texts here, or add a very short one -->
+      <p class="text-sm text-gray-500 mt-1">At least 8 characters.</p>
+      {% for error in form.password1.errors %}
+        <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <!-- Password2 field -->
+    <div class="mb-6">
+      <label for="{{ form.password2.id_for_label }}" class="block mb-1 font-semibold text-gray-700">Confirm Password</label>
+      {{ form.password2|add_class:"w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+      {% for error in form.password2.errors %}
+        <p class="text-red-600 text-sm mt-1">{{ error }}</p>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition">
+      Create Account
+    </button>
+  </form>
 </div>
 {% endblock %}
